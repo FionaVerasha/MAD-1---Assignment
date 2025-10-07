@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
     final backgroundColor = isDarkMode ? const Color(0xFF121212) : Colors.grey[300];
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
-    final accentColor = isDarkMode ? Colors.tealAccent[700]! : const Color.fromARGB(255, 119, 159, 181);
+    final accentColor = isDarkMode ? const Color.fromARGB(255, 19, 40, 75)! : const Color.fromARGB(255, 119, 159, 181);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -291,7 +291,7 @@ class HomePage extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-            child: Image.asset(imagePath, height: 200, width: double.infinity, fit: BoxFit.cover),
+            child: Image.asset(imagePath, height: 180, width: double.infinity, fit: BoxFit.cover),
           ),
           const SizedBox(height: 8),
           Padding(
