@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'cart_manager.dart';
 import 'cart_page.dart' as pages;
 
@@ -16,26 +15,42 @@ class AboutUsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure provider is available
+    // Access cart provider
     Provider.of<CartManager>(context, listen: false);
 
     final isWide = MediaQuery.of(context).size.width > 600;
 
+    final backgroundColor = isDarkMode ? const Color(0xFF121212) : Colors.grey[300];
+    final textColor = isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor = isDarkMode ? Colors.grey[300]! : const Color(0xFF374151);
+    final appBarColor = isDarkMode
+        ? const Color(0xFF2C2C2C)
+        : const Color.fromARGB(255, 52, 68, 122);
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 52, 68, 122),
+        backgroundColor: appBarColor,
         elevation: 3,
         title: const Text(
           "Whisker Cart",
           style: TextStyle(
-            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
         actions: [
-          // Search (same as HomePage)
+          // Theme Toggle Button
+          IconButton(
+            icon: Icon(
+              isDarkMode ? Icons.dark_mode : Icons.light_mode,
+              color: Colors.white,
+            ),
+            tooltip: isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode",
+            onPressed: () => onToggleTheme(!isDarkMode),
+          ),
+
+          // Search Button
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {
@@ -43,7 +58,7 @@ class AboutUsPage extends StatelessWidget {
             },
           ),
 
-          // Cart with badge (same as HomePage)
+          // Cart with Badge
           Stack(
             alignment: Alignment.center,
             children: [
@@ -78,6 +93,7 @@ class AboutUsPage extends StatelessWidget {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 10,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           )
@@ -90,17 +106,20 @@ class AboutUsPage extends StatelessWidget {
         ],
       ),
 
+      // Body with Dark/Light theme support
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF4B5563), Color(0xFF94A3B8)],
+              colors: isDarkMode
+                  ? [const Color(0xFF1F2937), const Color(0xFF374151)]
+                  : [const Color(0xFF4B5563), const Color(0xFF94A3B8)],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(16),
               bottomRight: Radius.circular(16),
             ),
@@ -109,14 +128,14 @@ class AboutUsPage extends StatelessWidget {
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(child: _buildTextSection(context)),
+                    Expanded(child: _buildTextSection(context, textColor, subTextColor)),
                     const SizedBox(width: 24),
                     Expanded(child: _buildImageSection()),
                   ],
                 )
               : Column(
                   children: [
-                    _buildTextSection(context),
+                    _buildTextSection(context, textColor, subTextColor),
                     const SizedBox(height: 20),
                     _buildImageSection(),
                   ],
@@ -127,48 +146,48 @@ class AboutUsPage extends StatelessWidget {
   }
 
   // Text Section
-  Widget _buildTextSection(BuildContext context) {
+  Widget _buildTextSection(BuildContext context, Color textColor, Color subTextColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "ABOUT US",
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: textColor,
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           "At Whisker Cart, we know pets are more than just animals — they’re part of the family. "
           "That’s why we’ve created an easy-to-use online store where pet parents can find everything "
           "they need in one place. From nutritious food and fun toys to grooming essentials and everyday "
           "accessories, our goal is to make caring for your furry friends simple, affordable, and enjoyable.",
           style: TextStyle(
-            color: Color(0xFFe5e7eb),
+            color: subTextColor,
             fontSize: 16,
             height: 1.6,
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           "With fast delivery, secure checkout, and a wide range of trusted products, we’re here to keep tails wagging "
           "and whiskers twitching with happiness. What makes us different is our focus on convenience and care. "
           "Quick product searches, clear categories, and personalized recommendations help you find exactly what your pet needs. "
           "Plus, with bundle deals, loyalty rewards, and seasonal promotions, you always get great value without compromising quality.",
           style: TextStyle(
-            color: Color(0xFFe5e7eb),
+            color: subTextColor,
             fontSize: 16,
             height: 1.6,
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           "Whether you’re a first-time pet parent or a long-time companion, "
           "Whisker Cart is here to support you every step of the way.",
           style: TextStyle(
-            color: Color(0xFFe5e7eb),
+            color: subTextColor,
             fontSize: 16,
             height: 1.6,
           ),
@@ -176,7 +195,7 @@ class AboutUsPage extends StatelessWidget {
         const SizedBox(height: 24),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue[700],
+            backgroundColor: isDarkMode ? Colors.blueGrey[700] : Colors.blue[700],
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -184,7 +203,6 @@ class AboutUsPage extends StatelessWidget {
             elevation: 4,
           ),
           onPressed: () {
-            // Navigate to your Contact Us page (set up this route in MaterialApp)
             Navigator.pushNamed(context, '/contact_us');
           },
           child: const Text(

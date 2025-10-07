@@ -3,7 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final bool isDarkMode;
+  final Function(bool) onToggleTheme;
+
+  const ProfilePage({
+    super.key,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -32,20 +39,41 @@ class _ProfilePageState extends State<ProfilePage> {
     await prefs.clear();
     if (!mounted) return;
     Navigator.pushReplacement(
-      // ignore: use_build_context_synchronously
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor =
+        widget.isDarkMode ? const Color(0xFF121212) : Colors.grey[200];
+    final textColor = widget.isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor =
+        widget.isDarkMode ? Colors.grey[400]! : Colors.grey[600]!;
+    final appBarColor = widget.isDarkMode
+        ? const Color(0xFF2C2C2C)
+        : const Color.fromARGB(255, 93, 107, 152);
+
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: const Color.fromARGB(255, 52, 68, 122),
+        backgroundColor: appBarColor,
         centerTitle: true,
+        actions: [
+          // Theme toggle button
+          IconButton(
+            icon: Icon(
+              widget.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+              color: Colors.white,
+            ),
+            tooltip: widget.isDarkMode
+                ? "Switch to Light Mode"
+                : "Switch to Dark Mode",
+            onPressed: () => widget.onToggleTheme(!widget.isDarkMode),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -58,30 +86,40 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 20),
 
-            //Display registered username
+            // Display registered username
             Text(
               username.isNotEmpty ? username : "User",
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
             const SizedBox(height: 10),
 
-            //Display registered email
+            // Display registered email
             Text(
               email.isNotEmpty ? email : "Loading email...",
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 16,
+                color: subTextColor,
+              ),
             ),
             const SizedBox(height: 30),
 
             ElevatedButton.icon(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Edit profile coming soon!")),
+                  const SnackBar(
+                      content: Text("Edit profile coming soon!")),
                 );
               },
               icon: const Icon(Icons.edit),
               label: const Text("Edit Profile"),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 52, 68, 122),
+                backgroundColor: widget.isDarkMode
+                    ? Colors.blueGrey[700]
+                    : const Color.fromARGB(255, 160, 164, 179),
                 minimumSize: const Size(double.infinity, 50),
               ),
             ),

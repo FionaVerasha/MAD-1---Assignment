@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
     final unselectedColor =
         widget.isDarkMode ? Colors.grey[400] : Colors.grey[600];
 
-    // Pages list (with dark mode + toggle passed)
+    // All pages with dark mode + toggle passed
     final List<Widget> pagesList = [
       HomePage(
         isDarkMode: widget.isDarkMode,
@@ -53,7 +53,10 @@ class _MainScreenState extends State<MainScreen> {
         isDarkMode: widget.isDarkMode,
         onToggleTheme: widget.onToggleTheme,
       ),
-      const ProfilePage(),
+      ProfilePage(
+        isDarkMode: widget.isDarkMode,
+        onToggleTheme: widget.onToggleTheme,
+      ),
     ];
 
     return Scaffold(
