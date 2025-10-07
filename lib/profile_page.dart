@@ -32,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await prefs.clear();
     if (!mounted) return;
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
@@ -57,14 +58,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 20),
 
-            // ✅ Display registered username
+            //Display registered username
             Text(
               username.isNotEmpty ? username : "User",
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
 
-            // ✅ Display registered email
+            //Display registered email
             Text(
               email.isNotEmpty ? email : "Loading email...",
               style: const TextStyle(fontSize: 16, color: Colors.grey),

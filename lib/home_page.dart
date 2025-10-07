@@ -3,19 +3,32 @@ import 'package:provider/provider.dart';
 import 'category_page.dart';
 import 'cart_page.dart' as pages;
 import 'cart_manager.dart';
-import 'productdetail_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final bool isDarkMode;
+  final Function(bool) onToggleTheme;
+
+  const HomePage({
+    super.key,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
 
   @override
   Widget build(BuildContext context) {
     Provider.of<CartManager>(context, listen: false);
 
+    final backgroundColor = isDarkMode ? const Color(0xFF121212) : Colors.grey[300];
+    final textColor = isDarkMode ? Colors.white : Colors.black87;
+    final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
+    final accentColor = isDarkMode ? Colors.tealAccent[700]! : const Color.fromARGB(255, 119, 159, 181);
+
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 52, 68, 122),
+        backgroundColor: isDarkMode
+            ? const Color(0xFF2C2C2C)
+            : const Color.fromARGB(255, 52, 68, 122),
         elevation: 3,
         title: const Text(
           "Whisker Cart",
@@ -34,44 +47,25 @@ class HomePage extends StatelessWidget {
             },
           ),
 
-          // Cart with badge
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const pages.CartPage()),
-                  );
-                },
-              ),
-              Positioned(
-                right: 6,
-                top: 6,
-                child: Consumer<CartManager>(
-                  builder: (context, cartManager, child) {
-                    return cartManager.totalItems > 0
-                        ? Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.redAccent,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              cartManager.totalItems.toString(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                              ),
-                            ),
-                          )
-                        : const SizedBox();
-                  },
-                ),
-              ),
-            ],
+          // Cart (navigates to full cart page)
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const pages.CartPage()),
+              );
+            },
+          ),
+
+          //Dark Mode Toggle (updates app-level theme)
+          IconButton(
+            icon: Icon(
+              isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.white,
+            ),
+            tooltip: isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode",
+            onPressed: () => onToggleTheme(!isDarkMode),
           ),
         ],
       ),
@@ -88,32 +82,34 @@ class HomePage extends StatelessWidget {
                   width: double.infinity,
                   height: 220,
                   fit: BoxFit.cover,
+                  color: isDarkMode ? Colors.black.withOpacity(0.6) : null,
+                  colorBlendMode: isDarkMode ? BlendMode.darken : null,
                 ),
                 Positioned.fill(
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "Find the Best Pet Products",
                           style: TextStyle(
-                            color: Colors.black87,
+                            color: textColor,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                        Text(
                           "Shop for your furry friend with ease",
                           style: TextStyle(
-                            color: Colors.black87,
+                            color: textColor,
                             fontSize: 18,
                           ),
                         ),
                         const SizedBox(height: 15),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 176, 183, 186),
+                            backgroundColor: accentColor,
                             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -134,9 +130,11 @@ class HomePage extends StatelessWidget {
               ],
             ),
 
-            // Featured categories
+            // Featured Categories
             Container(
-              color: const Color.fromARGB(255, 80, 84, 98),
+              color: isDarkMode
+                  ? const Color(0xFF2C2C2C)
+                  : const Color.fromARGB(255, 80, 84, 98),
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,7 +147,7 @@ class HomePage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 10),
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -158,10 +156,10 @@ class HomePage extends StatelessWidget {
                     mainAxisSpacing: 10,
                     childAspectRatio: 1,
                     children: [
-                      categoryCard("Dogs", "assets/images/dogs.png"),
-                      categoryCard("Cats", "assets/images/cats.png"),
-                      categoryCard("Accessories", "assets/images/accessories.png"),
-                      categoryCard("Grooming", "assets/images/grooming.png"),
+                      _categoryCard("Dogs", "assets/images/dogs.png", cardColor, textColor),
+                      _categoryCard("Cats", "assets/images/cats.png", cardColor, textColor),
+                      _categoryCard("Accessories", "assets/images/accessories.png", cardColor, textColor),
+                      _categoryCard("Grooming", "assets/images/grooming.png", cardColor, textColor),
                     ],
                   ),
                 ],
@@ -169,7 +167,7 @@ class HomePage extends StatelessWidget {
             ),
 
             // Best Sellers
-            sectionTitle("Best Sellers"),
+            _sectionTitle("Best Sellers", textColor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: GridView.count(
@@ -180,21 +178,21 @@ class HomePage extends StatelessWidget {
                 mainAxisSpacing: 12,
                 childAspectRatio: 0.72,
                 children: [
-                  productCard(context, "Premium Dog Food", "Rs.1200.00", "assets/images/bestsellars1.png"),
-                  productCard(context, "Clumping Cat Litter", "Rs.900.00", "assets/images/bestsellars2.png"),
-                  productCard(context, "Rawhide Chews Beef Bones", "Rs.500.00", "assets/images/bestsellars3.png"),
-                  productCard(context, "Flea & Tick Treatments", "Rs.800.00", "assets/images/bestsellars4.png"),
+                  _productCard(context, "Premium Dog Food", "Rs.1200.00", "assets/images/bestsellars1.png", cardColor, textColor, accentColor),
+                  _productCard(context, "Clumping Cat Litter", "Rs.900.00", "assets/images/bestsellars2.png", cardColor, textColor, accentColor),
+                  _productCard(context, "Rawhide Chews Beef Bones", "Rs.500.00", "assets/images/bestsellars3.png", cardColor, textColor, accentColor),
+                  _productCard(context, "Flea & Tick Treatments", "Rs.800.00", "assets/images/bestsellars4.png", cardColor, textColor, accentColor),
                 ],
               ),
             ),
 
             // Featured Products
-            sectionTitle("Featured Products"),
-            productGrid(context, [
-              featuredItem(context, "Pet Toy", "Rs.150.00", "assets/images/pet_toy.png"),
-              featuredItem(context, "Pet Tools", "Rs.800.00", "assets/images/pet_tool.png"),
-              featuredItem(context, "Pet Bed", "Rs.5000.00", "assets/images/pet_bed.png"),
-              featuredItem(context, "Litter Box", "Rs.10000.00", "assets/images/Litterbox.png"),
+            _sectionTitle("Featured Products", textColor),
+            _productGrid(context, [
+              _featuredItem(context, "Pet Toy", "Rs.150.00", "assets/images/pet_toy.png", cardColor, textColor, accentColor),
+              _featuredItem(context, "Pet Tools", "Rs.800.00", "assets/images/pet_tool.png", cardColor, textColor, accentColor),
+              _featuredItem(context, "Pet Bed", "Rs.5000.00", "assets/images/pet_bed.png", cardColor, textColor, accentColor),
+              _featuredItem(context, "Litter Box", "Rs.10000.00", "assets/images/Litterbox.png", cardColor, textColor, accentColor),
             ]),
           ],
         ),
@@ -202,11 +200,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Category Card
-  Widget categoryCard(String title, String imagePath) {
+  Widget _categoryCard(String title, String imagePath, Color cardColor, Color textColor) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [
           BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 3)),
@@ -227,10 +224,10 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: textColor,
               ),
             ),
           ),
@@ -239,25 +236,23 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Section Title
-  Widget sectionTitle(String title) {
+  Widget _sectionTitle(String title, Color textColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Center(
         child: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            color: textColor,
           ),
         ),
       ),
     );
   }
 
-  // Product Grid (for featured products)
-  Widget productGrid(BuildContext context, List<Widget> items) {
+  Widget _productGrid(BuildContext context, List<Widget> items) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: GridView.count(
@@ -272,113 +267,102 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Reusable Product Card (for best sellers)
-  Widget productCard(BuildContext context, String title, String price, String imagePath) {
+  Widget _productCard(
+    BuildContext context,
+    String title,
+    String price,
+    String imagePath,
+    Color cardColor,
+    Color textColor,
+    Color accentColor,
+  ) {
     final cart = Provider.of<CartManager>(context, listen: false);
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ProductDetailsPage(
-              title: title,
-              price: price,
-              imagePath: imagePath,
-              description: "High-quality product for your lovely pets.",
+    return Container(
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black38, blurRadius: 6, offset: Offset(0, 4)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+            child: Image.asset(imagePath, height: 200, width: double.infinity, fit: BoxFit.cover),
+          ),
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: textColor,
+              ),
             ),
           ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 216, 228, 239),
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 20, 79, 205),
-              blurRadius: 6,
-              offset: const Offset(0, 4),
+          const SizedBox(height: 4),
+          const Text(
+            // keep price green in both themes for readability
+            "",
+            style: TextStyle(height: 0), 
+          ),
+          Text(
+            price,
+            style: const TextStyle(
+              color: Colors.green,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              child: Image.asset(
-                imagePath,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                final parsedPrice = double.parse(price.replaceAll(RegExp(r'[^0-9.]'), ''));
+                cart.addToCart(CartItem(name: title, image: imagePath, price: parsedPrice));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('$title added to cart!'), duration: const Duration(milliseconds: 800)),
+                );
+              },
+              icon: const Icon(Icons.add_shopping_cart, size: 12),
+              label: const Text("Add to Cart"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: accentColor,
+                minimumSize: const Size(120, 36),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              price,
-              style: const TextStyle(
-                color: Colors.green,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  final parsedPrice = double.parse(price.replaceAll(RegExp(r'[^0-9.]'), ''));
-                  cart.addToCart(CartItem(name: title, image: imagePath, price: parsedPrice));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('$title added to cart!'),
-                      duration: const Duration(milliseconds: 800),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.add_shopping_cart, size:10),
-                label: const Text("Add to Cart"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 119, 159, 181),
-                  minimumSize: const Size(120, 36),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  // Featured Item (reuse card)
-  Widget featuredItem(BuildContext context, String title, String price, String imagePath) {
-    return productCard(context, title, price, imagePath);
+  Widget _featuredItem(
+    BuildContext context,
+    String title,
+    String price,
+    String imagePath,
+    Color cardColor,
+    Color textColor,
+    Color accentColor,
+  ) {
+    return _productCard(context, title, price, imagePath, cardColor, textColor, accentColor);
   }
 }
 
 // Search Delegate
 class _DummySearchDelegate extends SearchDelegate<String> {
   @override
-  List<Widget> buildActions(BuildContext context) => [
-        IconButton(icon: const Icon(Icons.clear), onPressed: () => query = ''),
-      ];
+  List<Widget> buildActions(BuildContext context) =>
+      [IconButton(icon: const Icon(Icons.clear), onPressed: () => query = '')];
 
   @override
   Widget buildLeading(BuildContext context) =>

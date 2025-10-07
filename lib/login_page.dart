@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
-import 'main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _busy = false;
 
-  LoginPage({super.key});
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
-  // Function to save login state and navigate to MainScreen
-  Future<void> _login(BuildContext context) async {
+  Future<void> _login() async {
     final email = _emailController.text.trim();
 
     if (email.isEmpty || _passwordController.text.isEmpty) {
@@ -20,18 +31,17 @@ class LoginPage extends StatelessWidget {
       return;
     }
 
-    // Save login state and email
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() => _busy = true);
+
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', true);
     await prefs.setString('user_email', email);
 
-    // Navigate to MainScreen
-    if (context.mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
-      );
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, '/main');
     }
+
+    setState(() => _busy = false);
   }
 
   @override
@@ -44,7 +54,6 @@ class LoginPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Login title
               const Text(
                 "Login",
                 style: TextStyle(
@@ -54,16 +63,10 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-
-              // Logo + Whisker Cart text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    height: 60,
-                    width: 60,
-                  ),
+                  Image.asset('assets/images/logo.png', height: 60, width: 60),
                   const SizedBox(width: 10),
                   const Text(
                     "Whisker Cart",
@@ -75,23 +78,15 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 10),
-
               Center(
                 child: Text(
                   "Enter your credentials to access your account",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[300],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[300]),
                   textAlign: TextAlign.center,
                 ),
               ),
-
               const SizedBox(height: 40),
-
-              // Container with border for login fields
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
@@ -101,9 +96,9 @@ class LoginPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // Email field
                     TextField(
                       controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         labelText: "Email",
                         labelStyle: TextStyle(color: Colors.white),
@@ -117,8 +112,6 @@ class LoginPage extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 20),
-
-                    // Password field
                     TextField(
                       controller: _passwordController,
                       decoration: const InputDecoration(
@@ -137,10 +130,7 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(height: 30),
-
-              // Login button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -151,27 +141,30 @@ class LoginPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () => _login(context),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
+                  onPressed: _busy ? null : _login,
+                  child: _busy
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
                 ),
               ),
-
               const SizedBox(height: 15),
-
-              // Register link
               Center(
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                      MaterialPageRoute(builder: (_) => RegisterPage()),
                     );
                   },
                   child: const Text(

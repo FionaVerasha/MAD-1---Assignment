@@ -6,8 +6,6 @@ import 'cart_manager.dart';
 import 'login_page.dart';
 import 'main_screen.dart';
 import 'about_us_page.dart';
-import 'profile_page.dart';
-// import 'contact_us_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,32 +18,97 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDarkMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThemePreference();
+  }
+
+  Future<void> _loadThemePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkMode = prefs.getBool('isDarkMode') ?? false;
+    });
+  }
+
+  Future<void> _toggleTheme(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', value);
+    setState(() {
+      _isDarkMode = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Whisker Cart',
-      theme: ThemeData(
-        useMaterial3: false,
-        primarySwatch: Colors.blueGrey,
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      theme: _lightTheme(),
+      darkTheme: _darkTheme(),
+      home: _AuthGate(
+        onToggleTheme: _toggleTheme,
+        isDarkMode: _isDarkMode,
       ),
-      home: const _AuthGate(),
       routes: {
-        '/login': (_) => LoginPage(), 
-        '/main': (_) => const MainScreen(),
+        '/login': (_) => const LoginPage(),
+        '/main': (_) => MainScreen(
+              onToggleTheme: _toggleTheme,
+              isDarkMode: _isDarkMode,
+            ),
         '/about': (_) => const AboutUsPage(),
-       
       },
+    );
+  }
+
+  ThemeData _lightTheme() {
+    return ThemeData(
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: Colors.grey[200],
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color.fromARGB(255, 52, 68, 122),
+        foregroundColor: Colors.white,
+      ),
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+    );
+  }
+
+  ThemeData _darkTheme() {
+    return ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: const Color(0xFF121212),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF2C2C2C),
+        foregroundColor: Colors.white,
+      ),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.blueGrey,
+        brightness: Brightness.dark,
+      ),
     );
   }
 }
 
-/// Checks SharedPreferences to decide which page to show first.
 class _AuthGate extends StatefulWidget {
-  const _AuthGate({super.key});
+  final Function(bool) onToggleTheme;
+  final bool isDarkMode;
+
+  const _AuthGate({
+    super.key,
+    required this.onToggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   State<_AuthGate> createState() => _AuthGateState();
@@ -57,10 +120,10 @@ class _AuthGateState extends State<_AuthGate> {
   @override
   void initState() {
     super.initState();
-    _isLoggedInFuture = _checkLogin();
+    _isLoggedInFuture = _checkLoginStatus();
   }
 
-  Future<bool> _checkLogin() async {
+  Future<bool> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('isLoggedIn') ?? false;
   }
@@ -76,16 +139,13 @@ class _AuthGateState extends State<_AuthGate> {
           );
         }
 
-        final isLoggedIn = snapshot.data!;
-        // Delay navigation until after first frame
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          Navigator.of(context).pushReplacementNamed(
-            isLoggedIn ? '/main' : '/login',
-          );
-        });
-
-        return const SizedBox.shrink();
+        final isLoggedIn = snapshot.data ?? false;
+        return isLoggedIn
+            ? MainScreen(
+                onToggleTheme: widget.onToggleTheme,
+                isDarkMode: widget.isDarkMode,
+              )
+            : const LoginPage();
       },
     );
   }
