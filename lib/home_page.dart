@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
     final backgroundColor = isDarkMode ? const Color(0xFF121212) : Colors.grey[300];
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
-    final accentColor = isDarkMode ? const Color.fromARGB(255, 19, 40, 75)! : const Color.fromARGB(255, 119, 159, 181);
+    final accentColor = isDarkMode ? const Color.fromARGB(255, 19, 40, 75) : const Color.fromARGB(255, 119, 159, 181);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                   width: double.infinity,
                   height: 220,
                   fit: BoxFit.cover,
-                  color: isDarkMode ? Colors.black.withOpacity(0.6) : null,
+                  color: isDarkMode ? Colors.black: null,
                   colorBlendMode: isDarkMode ? BlendMode.darken : null,
                 ),
                 Positioned.fill(
@@ -116,11 +116,17 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const CategoryPage()),
-                            );
-                          },
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CategoryPage(
+                                    isDarkMode: isDarkMode,
+                                    onToggleTheme: onToggleTheme,
+                                  ),
+                                ),
+                              );
+                            },
+
                           child: const Text("Shop Now"),
                         ),
                       ],

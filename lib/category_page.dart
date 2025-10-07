@@ -3,7 +3,14 @@ import 'dogs_page.dart' show DogsPage;
 import 'cats_page.dart' show CatsPage;
 
 class CategoryPage extends StatefulWidget {
-  const CategoryPage({super.key});
+  final bool isDarkMode;
+  final Function(bool) onToggleTheme;
+
+  const CategoryPage({
+    super.key,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();
@@ -20,12 +27,28 @@ class _CategoryPageState extends State<CategoryPage>
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isDark = widget.isDarkMode;
+
+    final Color scaffoldBg =
+        isDark ? const Color(0xFF121212) : const Color.fromARGB(255, 228, 229, 235);
+    final Color appBarBg =
+        isDark ? const Color(0xFF2C2C2C) : const Color.fromARGB(255, 52, 68, 122);
+    const Color appBarFg = Colors.white;
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 228, 229, 235),
+      backgroundColor: scaffoldBg,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 52, 68, 122), // dark blue-gray
+        backgroundColor: appBarBg,
+        foregroundColor: appBarFg,
+        centerTitle: true,
         title: const Text(
           "Categories",
           style: TextStyle(
@@ -33,9 +56,8 @@ class _CategoryPageState extends State<CategoryPage>
             color: Colors.white,
           ),
         ),
-        centerTitle: true,
         actions: [
-          // Search Icon
+          // Search
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {
@@ -47,9 +69,9 @@ class _CategoryPageState extends State<CategoryPage>
               );
             },
           ),
-          // Cart Icon
+          // Cart
           IconButton(
-            icon: const Icon(Icons.shopping_cart, color: Colors.white),
+            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -58,6 +80,15 @@ class _CategoryPageState extends State<CategoryPage>
                 ),
               );
             },
+          ),
+          // 🌗 Theme toggle (same behavior as Home)
+          IconButton(
+            icon: Icon(
+              isDark ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.white,
+            ),
+            tooltip: isDark ? "Switch to Light Mode" : "Switch to Dark Mode",
+            onPressed: () => widget.onToggleTheme(!isDark),
           ),
         ],
         bottom: TabBar(
@@ -72,12 +103,11 @@ class _CategoryPageState extends State<CategoryPage>
         ),
       ),
 
-      // Category Content
       body: TabBarView(
         controller: _tabController,
-        children: const [
-          DogsPage(),
-          CatsPage(),
+        children: [
+          DogsPage(isDarkMode: isDark),
+          CatsPage(isDarkMode: isDark),
         ],
       ),
     );

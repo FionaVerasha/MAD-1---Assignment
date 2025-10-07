@@ -105,7 +105,6 @@ class _AuthGate extends StatefulWidget {
   final bool isDarkMode;
 
   const _AuthGate({
-    super.key,
     required this.onToggleTheme,
     required this.isDarkMode,
   });
