@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
             },
           ),
 
-          //Cart with badge
+          // Cart with badge
           Stack(
             alignment: Alignment.center,
             children: [
@@ -76,12 +76,11 @@ class HomePage extends StatelessWidget {
         ],
       ),
 
-      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //hero section
+            // Hero section
             Stack(
               children: [
                 Image.asset(
@@ -135,7 +134,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
 
-            //Featured categories
+            // Featured categories
             Container(
               color: const Color.fromARGB(255, 80, 84, 98),
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
@@ -169,14 +168,27 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            //Best sellers
+            // Best Sellers
             sectionTitle("Best Sellers"),
-            productItem(context, "Premium Dog Food", "Rs.1200.00", "assets/images/bestsellars1.png"),
-            productItem(context, "Clumping Cat Litter", "Rs.900.00", "assets/images/bestsellars2.png"),
-            productItem(context, "Rawhide Chews Beef Bones", "Rs.500.00", "assets/images/bestsellars3.png"),
-            productItem(context, "Flea & Tick Treatments", "Rs.800.00", "assets/images/bestsellars4.png"),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.72,
+                children: [
+                  productCard(context, "Premium Dog Food", "Rs.1200.00", "assets/images/bestsellars1.png"),
+                  productCard(context, "Clumping Cat Litter", "Rs.900.00", "assets/images/bestsellars2.png"),
+                  productCard(context, "Rawhide Chews Beef Bones", "Rs.500.00", "assets/images/bestsellars3.png"),
+                  productCard(context, "Flea & Tick Treatments", "Rs.800.00", "assets/images/bestsellars4.png"),
+                ],
+              ),
+            ),
 
-            //featured products
+            // Featured Products
             sectionTitle("Featured Products"),
             productGrid(context, [
               featuredItem(context, "Pet Toy", "Rs.150.00", "assets/images/pet_toy.png"),
@@ -190,7 +202,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  //category card
+  // Category Card
   Widget categoryCard(String title, String imagePath) {
     return Container(
       decoration: BoxDecoration(
@@ -227,7 +239,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // section title
+  // Section Title
   Widget sectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -244,7 +256,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  //product grid
+  // Product Grid (for featured products)
   Widget productGrid(BuildContext context, List<Widget> items) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -260,8 +272,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  //product item card
-  Widget productItem(BuildContext context, String title, String price, String imagePath) {
+  // Reusable Product Card (for best sellers)
+  Widget productCard(BuildContext context, String title, String price, String imagePath) {
     final cart = Provider.of<CartManager>(context, listen: false);
 
     return GestureDetector(
@@ -281,36 +293,73 @@ class HomePage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 3)),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 6,
+              offset: const Offset(0, 4),
+            ),
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-              child: Image.asset(imagePath, height: 180, width: double.infinity, fit: BoxFit.cover),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+              child: Image.asset(
+                imagePath,
+                height: 150,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
-            const SizedBox(height: 6),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(price, style: const TextStyle(color: Colors.green, fontSize: 13)),
-            const SizedBox(height: 6),
-            ElevatedButton.icon(
-              onPressed: () {
-                final parsedPrice = double.parse(price.replaceAll(RegExp(r'[^0-9.]'), ''));
-                cart.addToCart(CartItem(name: title, image: imagePath, price: parsedPrice));
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('$title added to cart!'),
-                    duration: const Duration(milliseconds: 800),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.add_shopping_cart, size: 16),
-              label: const Text("Add to Cart"),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey[700]),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              price,
+              style: const TextStyle(
+                color: Colors.green,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  final parsedPrice = double.parse(price.replaceAll(RegExp(r'[^0-9.]'), ''));
+                  cart.addToCart(CartItem(name: title, image: imagePath, price: parsedPrice));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('$title added to cart!'),
+                      duration: const Duration(milliseconds: 800),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add_shopping_cart, size:10),
+                label: const Text("Add to Cart"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 167, 172, 175),
+                  minimumSize: const Size(120, 36),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
             ),
           ],
         ),
@@ -318,13 +367,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Reuse the same item builder for featured products
+  // Featured Item (reuse card)
   Widget featuredItem(BuildContext context, String title, String price, String imagePath) {
-    return productItem(context, title, price, imagePath);
+    return productCard(context, title, price, imagePath);
   }
 }
 
-// search delegate
+// Search Delegate
 class _DummySearchDelegate extends SearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) => [

@@ -93,6 +93,7 @@ flutter:
      - assets\images\IAMS.png
      - assets\images\american.png
      - assets\images\classicpets.png
+     - assets\images\bg.png
 
      
   # An image asset can refer to one or more resolution-specific "variants", see

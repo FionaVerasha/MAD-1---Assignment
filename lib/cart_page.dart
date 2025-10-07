@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'cart_manager.dart';
+import 'checkout_page.dart'; // Make sure this file exists
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -70,7 +71,7 @@ class CartPage extends StatelessWidget {
                                 ),
                               ),
 
-                              //Quantity controls and  Delete
+                              // Quantity controls + Delete button
                               Row(
                                 children: [
                                   IconButton(
@@ -78,10 +79,8 @@ class CartPage extends StatelessWidget {
                                     onPressed: () =>
                                         cartManager.decreaseQuantity(item),
                                   ),
-                                  Text(
-                                    item.quantity.toString(),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
+                                  Text(item.quantity.toString(),
+                                      style: const TextStyle(fontSize: 16)),
                                   IconButton(
                                     icon: const Icon(Icons.add_circle_outline),
                                     onPressed: () =>
@@ -89,10 +88,8 @@ class CartPage extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 5),
                                   IconButton(
-                                    icon: const Icon(Icons.delete,
-                                        color: Colors.red),
-                                    onPressed: () =>
-                                        cartManager.removeItem(item),
+                                    icon: const Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () => cartManager.removeItem(item),
                                   ),
                                 ],
                               ),
@@ -128,7 +125,7 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
 
-                //Checkout button
+                // Checkout button
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: ElevatedButton(
@@ -137,10 +134,18 @@ class CartPage extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 50),
                     ),
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Checkout not implemented yet.")),
-                      );
+                      if (cartManager.items.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Your cart is empty!")),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const CheckoutPage()),
+                        );
+                      }
                     },
                     child: const Text(
                       "Checkout",
@@ -148,9 +153,10 @@ class CartPage extends StatelessWidget {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
-                )
+                ),
               ],
             ),
     );
   }
 }
+
