@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
+import 'main_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatelessWidget {
   final _usernameController = TextEditingController();
@@ -9,20 +11,57 @@ class RegisterPage extends StatelessWidget {
 
   RegisterPage({super.key});
 
+  // Function to handle registration
+  Future<void> _register(BuildContext context) async {
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    // Basic validation
+    if (username.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill all fields")),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Passwords do not match")),
+      );
+      return;
+    }
+
+    // Save username and email in SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_name', username);
+    await prefs.setString('user_email', email);
+    await prefs.setBool('isLoggedIn', true);
+
+    // Navigate to MainScreen
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  const Color.fromARGB(255, 117, 145, 173), 
+      backgroundColor: const Color.fromARGB(255, 117, 145, 173),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Register text 
-              Text(
+              // Register title
+              const Text(
                 "Register",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -40,7 +79,6 @@ class RegisterPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    
                     TextField(
                       controller: _usernameController,
                       decoration: const InputDecoration(
@@ -56,8 +94,6 @@ class RegisterPage extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 20),
-
-                   
                     TextField(
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -73,8 +109,6 @@ class RegisterPage extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 20),
-
-                    
                     TextField(
                       controller: _passwordController,
                       decoration: const InputDecoration(
@@ -91,8 +125,6 @@ class RegisterPage extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                     const SizedBox(height: 20),
-
-                    
                     TextField(
                       controller: _confirmPasswordController,
                       decoration: const InputDecoration(
@@ -125,12 +157,7 @@ class RegisterPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
+                  onPressed: () => _register(context),
                   child: const Text(
                     "Register",
                     style: TextStyle(

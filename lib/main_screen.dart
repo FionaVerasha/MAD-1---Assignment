@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'category_page.dart';
 import 'cart_page.dart';
+import 'profile_page.dart';
 import 'about_us_page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -14,12 +15,13 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const CategoryPage(),
-    const CartPage(),
-    const ProfilePage(),
-    const AboutUsPage(),
+  // Pages for bottom navigation
+  final List<Widget> _pages = const [
+    HomePage(),
+    CategoryPage(),
+    CartPage(),
+    ProfilePage(),
+    AboutUsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,6 +34,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
+
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
@@ -45,22 +49,6 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.info_outline), label: "About Us"),
         ],
-      ),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          "Profile Page",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
       ),
     );
   }

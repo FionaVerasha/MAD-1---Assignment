@@ -6,6 +6,7 @@ import 'cart_manager.dart';
 import 'login_page.dart';
 import 'main_screen.dart';
 import 'about_us_page.dart';
+import 'profile_page.dart';
 // import 'contact_us_page.dart';
 
 void main() async {

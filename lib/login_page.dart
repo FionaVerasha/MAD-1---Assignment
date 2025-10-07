@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
-import 'main_screen.dart'; 
+import 'main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
@@ -11,27 +11,40 @@ class LoginPage extends StatelessWidget {
 
   // Function to save login state and navigate to MainScreen
   Future<void> _login(BuildContext context) async {
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter email and password")),
+      );
+      return;
+    }
+
+    // Save login state and email
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('user_email', email);
 
-    Navigator.pushReplacement(
-      // ignore: use_build_context_synchronously
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+    // Navigate to MainScreen
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 117, 145, 173), 
+      backgroundColor: const Color.fromARGB(255, 117, 145, 173),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //Login text 
+              // Login title
               const Text(
                 "Login",
                 style: TextStyle(
@@ -42,7 +55,7 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
 
-              //Logo,Whisker Cart text
+              // Logo + Whisker Cart text
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -88,7 +101,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                  
+                    // Email field
                     TextField(
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -105,7 +118,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    
+                    // Password field
                     TextField(
                       controller: _passwordController,
                       decoration: const InputDecoration(
@@ -139,7 +152,8 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () => _login(context),
-                  child: const Text("Login",
+                  child: const Text(
+                    "Login",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -151,7 +165,7 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 15),
 
-              //Register link
+              // Register link
               Center(
                 child: TextButton(
                   onPressed: () {

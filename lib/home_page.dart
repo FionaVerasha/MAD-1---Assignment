@@ -149,7 +149,7 @@ class HomePage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -292,11 +292,11 @@ class HomePage extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: const Color.fromARGB(255, 216, 228, 239),
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: const Color.fromARGB(255, 20, 79, 205),
               blurRadius: 6,
               offset: const Offset(0, 4),
             ),
@@ -312,7 +312,7 @@ class HomePage extends StatelessWidget {
               ),
               child: Image.asset(
                 imagePath,
-                height: 150,
+                height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -355,7 +355,7 @@ class HomePage extends StatelessWidget {
                 icon: const Icon(Icons.add_shopping_cart, size:10),
                 label: const Text("Add to Cart"),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 167, 172, 175),
+                  backgroundColor: const Color.fromARGB(255, 119, 159, 181),
                   minimumSize: const Size(120, 36),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
