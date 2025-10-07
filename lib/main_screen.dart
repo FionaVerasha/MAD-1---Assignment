@@ -1,12 +1,11 @@
-import 'package:assignment_2/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'cart_manager.dart';
 import 'cart_page.dart' as pages;
 import 'home_page.dart';
 import 'category_page.dart';
 import 'about_us_page.dart';
+import 'profile_page.dart';
 
 class MainScreen extends StatefulWidget {
   final Function(bool) onToggleTheme;
@@ -29,7 +28,14 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final cartManager = Provider.of<CartManager>(context);
 
-    // Define all pages and pass theme props
+    final backgroundColor =
+        widget.isDarkMode ? const Color(0xFF121212) : Colors.white;
+    final selectedColor =
+        widget.isDarkMode ? Colors.white : Colors.blueGrey[900];
+    final unselectedColor =
+        widget.isDarkMode ? Colors.grey[400] : Colors.grey[600];
+
+    // Pages list (with dark mode + toggle passed)
     final List<Widget> pagesList = [
       HomePage(
         isDarkMode: widget.isDarkMode,
@@ -39,34 +45,33 @@ class _MainScreenState extends State<MainScreen> {
         isDarkMode: widget.isDarkMode,
         onToggleTheme: widget.onToggleTheme,
       ),
-      const pages.CartPage(),
-      const AboutUsPage(),
+      pages.CartPage(
+        isDarkMode: widget.isDarkMode,
+        onToggleTheme: widget.onToggleTheme,
+      ),
+      AboutUsPage(
+        isDarkMode: widget.isDarkMode,
+        onToggleTheme: widget.onToggleTheme,
+      ),
       const ProfilePage(),
     ];
 
-    // Colors based on dark mode
-    final backgroundColor =
-        widget.isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
-    final selectedColor =
-        widget.isDarkMode ? Colors.tealAccent[200] : Colors.blueGrey[900];
-    final unselectedColor =
-        widget.isDarkMode ? Colors.white70 : Colors.grey[600];
-
     return Scaffold(
       backgroundColor: backgroundColor,
-
-      // Display current page content
       body: pagesList[_selectedIndex],
 
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        selectedItemColor: selectedColor,
-        unselectedItemColor: unselectedColor,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         backgroundColor:
             widget.isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
+        selectedItemColor: selectedColor,
+        unselectedItemColor: unselectedColor,
         type: BottomNavigationBarType.fixed,
-        onTap: (index) => setState(() => _selectedIndex = index),
         items: [
           const BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -76,17 +81,15 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.pets_outlined),
             label: 'Categories',
           ),
-
-          // 🛒 Cart icon with live badge
           BottomNavigationBarItem(
             icon: Stack(
-              clipBehavior: Clip.none,
+              alignment: Alignment.center,
               children: [
                 const Icon(Icons.shopping_cart_outlined),
                 if (cartManager.totalItems > 0)
                   Positioned(
-                    right: -6,
-                    top: -2,
+                    right: 0,
+                    top: 0,
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
@@ -98,6 +101,7 @@ class _MainScreenState extends State<MainScreen> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -106,7 +110,6 @@ class _MainScreenState extends State<MainScreen> {
             ),
             label: 'Cart',
           ),
-
           const BottomNavigationBarItem(
             icon: Icon(Icons.info_outline),
             label: 'About',

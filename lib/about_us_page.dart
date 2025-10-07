@@ -5,7 +5,14 @@ import 'cart_manager.dart';
 import 'cart_page.dart' as pages;
 
 class AboutUsPage extends StatelessWidget {
-  const AboutUsPage({super.key});
+  final bool isDarkMode;
+  final Function(bool) onToggleTheme;
+
+  const AboutUsPage({
+    super.key,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +52,12 @@ class AboutUsPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const pages.CartPage()),
+                    MaterialPageRoute(
+                      builder: (_) => pages.CartPage(
+                        isDarkMode: isDarkMode,
+                        onToggleTheme: onToggleTheme,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -84,7 +96,7 @@ class AboutUsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF4B5563), Color(0xFF94A3B8)], 
+              colors: [Color(0xFF4B5563), Color(0xFF94A3B8)],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
@@ -134,7 +146,7 @@ class AboutUsPage extends StatelessWidget {
           "they need in one place. From nutritious food and fun toys to grooming essentials and everyday "
           "accessories, our goal is to make caring for your furry friends simple, affordable, and enjoyable.",
           style: TextStyle(
-            color: Color(0xFFe5e7eb), 
+            color: Color(0xFFe5e7eb),
             fontSize: 16,
             height: 1.6,
           ),
