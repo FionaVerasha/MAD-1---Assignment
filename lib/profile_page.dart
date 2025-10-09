@@ -39,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await prefs.clear();
     if (!mounted) return;
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => const LoginPage()),
     );

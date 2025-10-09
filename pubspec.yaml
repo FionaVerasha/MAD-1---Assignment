@@ -69,10 +69,6 @@ flutter:
      - assets\images\cats.png
      - assets\images\accessories.png
      - assets\images\grooming.png
-     - assets\images\bestsellars1.png
-     - assets\images\bestsellars2.png
-     - assets\images\bestsellars3.png
-     - assets\images\bestsellars4.png
      - assets\images\pet_toy.png
      - assets\images\pet_bed.png
      - assets\images\pet_tool.png
@@ -94,6 +90,15 @@ flutter:
      - assets\images\american.png
      - assets\images\classicpets.png
      - assets\images\bg.png
+     - assets\images\collars.png
+     - assets\images\petbed.png
+     - assets\images\scratchingpost.png
+     - assets\images\toys.png
+     - assets\images\new1.png
+     - assets\images\new2.png
+     - assets\images\new3.png
+     - assets\images\new4.png
+     
 
      
   # An image asset can refer to one or more resolution-specific "variants", see
