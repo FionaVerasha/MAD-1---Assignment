@@ -81,7 +81,7 @@ class _CategoryPageState extends State<CategoryPage>
               );
             },
           ),
-          // 🌗 Theme toggle (same behavior as Home)
+          // Theme toggle
           IconButton(
             icon: Icon(
               isDark ? Icons.light_mode : Icons.dark_mode,

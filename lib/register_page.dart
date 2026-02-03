@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatelessWidget {
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-
   RegisterPage({super.key});
+
+  final Uri _url = Uri.parse('https://whisker-cart.onrender.com/register');
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  const Color.fromARGB(255, 117, 145, 173), 
+      backgroundColor: const Color.fromARGB(255, 117, 145, 173),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Register text 
-              Text(
+              // Register text
+              const Text(
                 "Register",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -30,7 +34,7 @@ class RegisterPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
 
-              // Container with border for register fields
+              // Container with explanation for website-based registration
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
@@ -40,73 +44,26 @@ class RegisterPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    
-                    TextField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: "Username",
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white54),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
-                        ),
-                      ),
-                      style: const TextStyle(color: Colors.white),
+                    const Icon(
+                      Icons.info_outline,
+                      color: Colors.white70,
+                      size: 40,
                     ),
                     const SizedBox(height: 20),
-
-                   
-                    TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white54),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
-                        ),
+                    const Text(
+                      "Account registration is handled securely via the website using Jetstream.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
-                      style: const TextStyle(color: Colors.white),
                     ),
-                    const SizedBox(height: 20),
-
-                    
-                    TextField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(
-                        labelText: "Password",
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white54),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
-                        ),
-                      ),
-                      obscureText: true,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 20),
-
-                    
-                    TextField(
-                      controller: _confirmPasswordController,
-                      decoration: const InputDecoration(
-                        labelText: "Confirm Password",
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white54),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent),
-                        ),
-                      ),
-                      obscureText: true,
-                      style: const TextStyle(color: Colors.white),
+                    const SizedBox(height: 15),
+                    const Text(
+                      "After registering, return here to log in using your credentials.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
                     ),
                   ],
                 ),
@@ -114,10 +71,10 @@ class RegisterPage extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // Register button
+              // Register on Website button
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -125,14 +82,10 @@ class RegisterPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  child: const Text(
-                    "Register",
+                  onPressed: _launchUrl,
+                  icon: const Icon(Icons.open_in_browser, color: Colors.black),
+                  label: const Text(
+                    "Register on Website",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -150,7 +103,9 @@ class RegisterPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
                     );
                   },
                   child: const Text(

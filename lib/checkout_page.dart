@@ -16,14 +16,17 @@ class CheckoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartManager = Provider.of<CartManager>(context);
 
-    final backgroundColor =
-        isDarkMode ? const Color(0xFF121212) : Colors.grey[200];
+    final backgroundColor = isDarkMode
+        ? const Color(0xFF121212)
+        : Colors.grey[200];
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = isDarkMode ? Colors.white : Colors.black87;
-    final appBarColor =
-        isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFADBFC8);
-    final accentColor =
-        isDarkMode ? Colors.tealAccent[700]! : const Color(0xFF707C82);
+    final appBarColor = isDarkMode
+        ? const Color(0xFF2C2C2C)
+        : const Color(0xFFADBFC8);
+    final accentColor = isDarkMode
+        ? Colors.tealAccent[700]!
+        : const Color(0xFF707C82);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -70,8 +73,10 @@ class CheckoutPage extends StatelessWidget {
                   final item = cartManager.items[index];
                   return Card(
                     color: cardColor,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 2,
+                    ),
                     child: ListTile(
                       leading: Image.asset(item.image, width: 50, height: 50),
                       title: Text(
@@ -89,7 +94,9 @@ class CheckoutPage extends StatelessWidget {
                       trailing: Text(
                         "Rs. ${(item.price * item.quantity).toStringAsFixed(2)}",
                         style: const TextStyle(
-                            color: Colors.green, fontWeight: FontWeight.bold),
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   );
@@ -130,7 +137,8 @@ class CheckoutPage extends StatelessWidget {
                 backgroundColor: accentColor,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(

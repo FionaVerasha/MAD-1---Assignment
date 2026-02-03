@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cart_manager.dart';
+import 'auth_provider.dart';
 import 'login_page.dart';
 import 'main_screen.dart';
 import 'about_us_page.dart';
@@ -11,8 +12,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => CartManager(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartManager()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -123,32 +127,27 @@ class _AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<_AuthGate> {
-  late final Future<bool> _isLoggedInFuture;
+  late Future<bool> _authCheckFuture;
 
   @override
   void initState() {
     super.initState();
-    _isLoggedInFuture = _checkLoginStatus();
-  }
-
-  Future<bool> _checkLoginStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('isLoggedIn') ?? false;
+    _authCheckFuture = Provider.of<AuthProvider>(context, listen: false).checkAuth();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: _isLoggedInFuture,
+      future: _authCheckFuture,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        final isLoggedIn = snapshot.data ?? false;
-        return isLoggedIn
+        final isAuthenticated = snapshot.data ?? false;
+        return isAuthenticated
             ? MainScreen(
                 onToggleTheme: widget.onToggleTheme,
                 isDarkMode: widget.isDarkMode,
