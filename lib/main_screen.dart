@@ -32,8 +32,8 @@ class _MainScreenState extends State<MainScreen> {
         ? const Color(0xFF121212)
         : Colors.white;
     final selectedColor = widget.isDarkMode
-        ? Colors.white
-        : Colors.blueGrey[900];
+        ? const Color(0xFF4CAF50)
+        : const Color(0xFF2E7D32);
     final unselectedColor = widget.isDarkMode
         ? Colors.grey[400]
         : Colors.grey[600];
@@ -100,7 +100,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
-                        color: Colors.redAccent,
+                        color: const Color(0xFF4CAF50),
                         shape: BoxShape.circle,
                       ),
                       child: Text(

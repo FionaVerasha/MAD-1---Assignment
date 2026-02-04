@@ -41,6 +41,9 @@ dependencies:
   connectivity_plus: ^7.0.0
   image_picker: ^1.1.2
   battery_plus: ^6.1.1
+  path_provider: ^2.1.2
+  path: ^1.9.0
+  geolocator: ^13.0.2
 
 dev_dependencies:
   flutter_test:
@@ -68,41 +71,41 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets\images\logo.png
-     - assets\images\main.jpg
-     - assets\images\dogs.png
-     - assets\images\cats.png
-     - assets\images\accessories.png
-     - assets\images\grooming.png
-     - assets\images\pet_toy.png
-     - assets\images\pet_bed.png
-     - assets\images\pet_tool.png
-     - assets\images\Litterbox.png
-     - assets\images\supplements.png
-     - assets\images\heatingpad.png
-     - assets\images\dirtbag.png
-     - assets\images\shampoo&conditioner.png
-     - assets\images\Whiskas.png
-     - assets\images\TasteFuls.png
-     - assets\images\smartheart.png
-     - assets\images\olives.png
-     - assets\images\LetsBite.png
-     - assets\images\catpro.png
-     - assets\images\smallbreed.png
-     - assets\images\PetStar.png
-     - assets\images\BHawak.png
-     - assets\images\IAMS.png
-     - assets\images\american.png
-     - assets\images\classicpets.png
-     - assets\images\bg.png
-     - assets\images\collars.png
-     - assets\images\petbed.png
-     - assets\images\scratchingpost.png
-     - assets\images\toys.png
-     - assets\images\new1.png
-     - assets\images\new2.png
-     - assets\images\new3.png
-     - assets\images\new4.png
+     - assets/images/logo.png
+     - assets/images/main.jpg
+     - assets/images/dogs.png
+     - assets/images/cats.png
+     - assets/images/accessories.png
+     - assets/images/grooming.png
+     - assets/images/pet_toy.png
+     - assets/images/pet_bed.png
+     - assets/images/pet_tool.png
+     - assets/images/Litterbox.png
+     - assets/images/supplements.png
+     - assets/images/heatingpad.png
+     - assets/images/dirtbag.png
+     - assets/images/shampoo&conditioner.png
+     - assets/images/Whiskas.png
+     - assets/images/TasteFuls.png
+     - assets/images/smartheart.png
+     - assets/images/olives.png
+     - assets/images/LetsBite.png
+     - assets/images/catpro.png
+     - assets/images/smallbreed.png
+     - assets/images/PetStar.png
+     - assets/images/BHawak.png
+     - assets/images/IAMS.png
+     - assets/images/american.png
+     - assets/images/classicpets.png
+     - assets/images/bg.png
+     - assets/images/collars.png
+     - assets/images/petbed.png
+     - assets/images/scratchingpost.png
+     - assets/images/toys.png
+     - assets/images/new1.png
+     - assets/images/new2.png
+     - assets/images/new3.png
+     - assets/images/new4.png
      - assets/json/
      
 

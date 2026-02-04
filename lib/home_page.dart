@@ -55,11 +55,11 @@ class _HomePageState extends State<HomePage> {
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final accentColor = isDarkMode
-        ? Colors.tealAccent[700]!
-        : const Color(0xFF779FB5);
+        ? const Color(0xFF4CAF50)
+        : const Color(0xFF2E7D32);
     final appBarColor = isDarkMode
-        ? const Color(0xFF2C2C2C)
-        : const Color.fromARGB(255, 52, 68, 122);
+        ? const Color(0xFF1B3022)
+        : const Color(0xFF2E7D32);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
-                      color: Colors.redAccent,
+                      color: const Color(0xFF4CAF50),
                       shape: BoxShape.circle,
                     ),
                     child: Text(

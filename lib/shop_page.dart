@@ -47,11 +47,17 @@ class _ShopPageState extends State<ShopPage> {
   List<Product> _getFilteredProducts(List<Product> allProducts) {
     switch (_selectedCategory) {
       case 'Premium Products':
+        final premiumNames = [
+          'premium kitty',
+          'classic cat cuisine',
+          'premium dog food',
+          'premium puppy',
+          'elite wellness',
+          'gourmet feast',
+        ];
         return allProducts.where((p) {
           final name = p.name.toLowerCase();
-          return name.contains('premium') ||
-              name.contains('royal') ||
-              p.price > 2500;
+          return premiumNames.any((pn) => name.contains(pn));
         }).toList();
       case 'CAT Products':
         return allProducts.where((p) {
@@ -96,13 +102,13 @@ class _ShopPageState extends State<ShopPage> {
         ? const Color(0xFF121212)
         : const Color.fromARGB(255, 240, 242, 245);
     final Color appBarBg = isDark
-        ? const Color(0xFF2C2C2C)
-        : const Color.fromARGB(255, 52, 68, 122);
+        ? const Color(0xFF1B3022)
+        : const Color(0xFF2E7D32);
     final Color textColor = isDark ? Colors.white : Colors.black87;
     final Color cardColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
     final Color buttonBg = isDark
-        ? Colors.blueGrey[400]!
-        : Colors.blueGrey[800]!;
+        ? const Color(0xFF4CAF50)
+        : const Color(0xFF2E7D32);
 
     final filteredProducts = _getFilteredProducts(productProvider.products);
 

@@ -39,8 +39,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     final bg = widget.isDarkMode ? const Color(0xFF121212) : Colors.grey[200];
     final appBarColor = widget.isDarkMode
-        ? const Color(0xFF2C2C2C)
-        : const Color.fromARGB(255, 52, 68, 122);
+        ? const Color(0xFF1B3022)
+        : const Color(0xFF2E7D32);
     final textColor = widget.isDarkMode ? Colors.white : Colors.black87;
     final cardColor = widget.isDarkMode
         ? const Color(0xFF1E1E1E)
@@ -80,7 +80,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
-                      color: Colors.redAccent,
+                      color: Color(0xFF4CAF50),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
@@ -221,7 +221,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueGrey[800],
+                              backgroundColor: const Color(0xFF2E7D32),
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),

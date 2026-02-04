@@ -24,11 +24,11 @@ class CartPage extends StatelessWidget {
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final accentColor = isDarkMode
-        ? Colors.tealAccent[700]!
-        : const Color(0xFF707C82);
+        ? const Color(0xFF4CAF50)
+        : const Color(0xFF2E7D32);
     final appBarColor = isDarkMode
-        ? const Color(0xFF2C2C2C)
-        : const Color(0xFFADBFC8);
+        ? const Color(0xFF1B3022)
+        : const Color(0xFF2E7D32);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -246,12 +246,12 @@ class CartPage extends StatelessWidget {
                         );
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "Checkout",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? Colors.black : Colors.white,
+                        color: Colors.white,
                       ),
                     ),
                   ),
