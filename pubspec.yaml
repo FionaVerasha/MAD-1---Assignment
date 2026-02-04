@@ -38,6 +38,9 @@ dependencies:
   shared_preferences: ^2.2.2
   http: ^1.6.0
   url_launcher: ^6.3.2
+  connectivity_plus: ^7.0.0
+  image_picker: ^1.1.2
+  battery_plus: ^6.1.1
 
 dev_dependencies:
   flutter_test:
@@ -100,6 +103,7 @@ flutter:
      - assets\images\new2.png
      - assets\images\new3.png
      - assets\images\new4.png
+     - assets/json/
      
 
      

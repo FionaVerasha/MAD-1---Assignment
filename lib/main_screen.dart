@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'cart_manager.dart';
 import 'cart_page.dart' as pages;
 import 'home_page.dart';
-import 'category_page.dart';
+import 'shop_page.dart';
 import 'about_us_page.dart';
 import 'profile_page.dart';
 
@@ -28,12 +28,15 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final cartManager = Provider.of<CartManager>(context);
 
-    final backgroundColor =
-        widget.isDarkMode ? const Color(0xFF121212) : Colors.white;
-    final selectedColor =
-        widget.isDarkMode ? Colors.white : Colors.blueGrey[900];
-    final unselectedColor =
-        widget.isDarkMode ? Colors.grey[400] : Colors.grey[600];
+    final backgroundColor = widget.isDarkMode
+        ? const Color(0xFF121212)
+        : Colors.white;
+    final selectedColor = widget.isDarkMode
+        ? Colors.white
+        : Colors.blueGrey[900];
+    final unselectedColor = widget.isDarkMode
+        ? Colors.grey[400]
+        : Colors.grey[600];
 
     // All pages with dark mode + toggle passed
     final List<Widget> pagesList = [
@@ -41,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
         isDarkMode: widget.isDarkMode,
         onToggleTheme: widget.onToggleTheme,
       ),
-      CategoryPage(
+      ShopPage(
         isDarkMode: widget.isDarkMode,
         onToggleTheme: widget.onToggleTheme,
       ),
@@ -70,8 +73,9 @@ class _MainScreenState extends State<MainScreen> {
             _selectedIndex = index;
           });
         },
-        backgroundColor:
-            widget.isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
+        backgroundColor: widget.isDarkMode
+            ? const Color(0xFF2C2C2C)
+            : Colors.white,
         selectedItemColor: selectedColor,
         unselectedItemColor: unselectedColor,
         type: BottomNavigationBarType.fixed,
@@ -81,8 +85,8 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Home',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.pets_outlined),
-            label: 'Categories',
+            icon: Icon(Icons.storefront_outlined),
+            label: 'Shop',
           ),
           BottomNavigationBarItem(
             icon: Stack(

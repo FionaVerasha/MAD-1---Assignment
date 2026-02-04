@@ -18,14 +18,17 @@ class CartPage extends StatelessWidget {
     final cartManager = Provider.of<CartManager>(context);
 
     //Dark mode colors
-    final backgroundColor =
-        isDarkMode ? const Color(0xFF121212) : Colors.grey[200];
+    final backgroundColor = isDarkMode
+        ? const Color(0xFF121212)
+        : Colors.grey[200];
     final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final textColor = isDarkMode ? Colors.white : Colors.black87;
-    final accentColor =
-        isDarkMode ? Colors.tealAccent[700]! : const Color(0xFF707C82);
-    final appBarColor =
-        isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFADBFC8);
+    final accentColor = isDarkMode
+        ? Colors.tealAccent[700]!
+        : const Color(0xFF707C82);
+    final appBarColor = isDarkMode
+        ? const Color(0xFF2C2C2C)
+        : const Color(0xFFADBFC8);
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -46,8 +49,9 @@ class CartPage extends StatelessWidget {
               isDarkMode ? Icons.light_mode : Icons.dark_mode,
               color: Colors.white,
             ),
-            tooltip:
-                isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode",
+            tooltip: isDarkMode
+                ? "Switch to Light Mode"
+                : "Switch to Dark Mode",
             onPressed: () => onToggleTheme(!isDarkMode),
           ),
         ],
@@ -70,7 +74,9 @@ class CartPage extends StatelessWidget {
                       return Card(
                         color: cardColor,
                         margin: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -78,12 +84,28 @@ class CartPage extends StatelessWidget {
                               // Product Image
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  item.image,
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: item.image.startsWith('http')
+                                    ? Image.network(
+                                        item.image,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          print(
+                                            '--- ERROR: Failed to load image: ${item.image}',
+                                          );
+                                          return const Icon(
+                                            Icons.broken_image,
+                                            size: 40,
+                                          );
+                                        },
+                                      )
+                                    : Image.asset(
+                                        item.image,
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                               const SizedBox(width: 10),
 
@@ -115,10 +137,12 @@ class CartPage extends StatelessWidget {
                               Row(
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.remove_circle_outline,
-                                        color: isDarkMode
-                                            ? Colors.white70
-                                            : Colors.black87),
+                                    icon: Icon(
+                                      Icons.remove_circle_outline,
+                                      color: isDarkMode
+                                          ? Colors.white70
+                                          : Colors.black87,
+                                    ),
                                     onPressed: () =>
                                         cartManager.decreaseQuantity(item),
                                   ),
@@ -130,17 +154,21 @@ class CartPage extends StatelessWidget {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.add_circle_outline,
-                                        color: isDarkMode
-                                            ? Colors.white70
-                                            : Colors.black87),
+                                    icon: Icon(
+                                      Icons.add_circle_outline,
+                                      color: isDarkMode
+                                          ? Colors.white70
+                                          : Colors.black87,
+                                    ),
                                     onPressed: () =>
                                         cartManager.increaseQuantity(item),
                                   ),
                                   const SizedBox(width: 5),
                                   IconButton(
-                                    icon: const Icon(Icons.delete,
-                                        color: Colors.redAccent),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.redAccent,
+                                    ),
                                     onPressed: () =>
                                         cartManager.removeItem(item),
                                   ),
@@ -157,7 +185,9 @@ class CartPage extends StatelessWidget {
                 // Total Section
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   color: cardColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

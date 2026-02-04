@@ -4,9 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cart_manager.dart';
 import 'auth_provider.dart';
+import 'providers/product_provider.dart';
 import 'login_page.dart';
 import 'main_screen.dart';
 import 'about_us_page.dart';
+import 'services/connectivity_service.dart';
+import 'providers/featured_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +19,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => CartManager()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => ConnectivityService()),
+        ChangeNotifierProvider(create: (_) => FeaturedProvider()),
       ],
       child: const MyApp(),
     ),
@@ -63,22 +69,15 @@ class _MyAppState extends State<MyApp> {
       darkTheme: _darkTheme(),
 
       // Handles login and routing logic
-      home: _AuthGate(
-        onToggleTheme: _toggleTheme,
-        isDarkMode: _isDarkMode,
-      ),
+      home: _AuthGate(onToggleTheme: _toggleTheme, isDarkMode: _isDarkMode),
 
       // Named routes
       routes: {
         '/login': (_) => const LoginPage(),
-        '/main': (_) => MainScreen(
-              onToggleTheme: _toggleTheme,
-              isDarkMode: _isDarkMode,
-            ),
-        '/about': (_) => AboutUsPage(
-              isDarkMode: _isDarkMode,
-              onToggleTheme: _toggleTheme,
-            ),
+        '/main': (_) =>
+            MainScreen(onToggleTheme: _toggleTheme, isDarkMode: _isDarkMode),
+        '/about': (_) =>
+            AboutUsPage(isDarkMode: _isDarkMode, onToggleTheme: _toggleTheme),
       },
     );
   }
@@ -117,10 +116,7 @@ class _AuthGate extends StatefulWidget {
   final Function(bool) onToggleTheme;
   final bool isDarkMode;
 
-  const _AuthGate({
-    required this.onToggleTheme,
-    required this.isDarkMode,
-  });
+  const _AuthGate({required this.onToggleTheme, required this.isDarkMode});
 
   @override
   State<_AuthGate> createState() => _AuthGateState();
@@ -132,7 +128,10 @@ class _AuthGateState extends State<_AuthGate> {
   @override
   void initState() {
     super.initState();
-    _authCheckFuture = Provider.of<AuthProvider>(context, listen: false).checkAuth();
+    _authCheckFuture = Provider.of<AuthProvider>(
+      context,
+      listen: false,
+    ).checkAuth();
   }
 
   @override

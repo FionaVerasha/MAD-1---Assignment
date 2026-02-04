@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Organic Catnip",
+    "price": 450.00,
+    "image": "https://images.unsplash.com/photo-1591871937573-74dbba515c4c?q=80&w=500&auto=format&fit=crop",
+    "description": "High-quality organic catnip to keep your cat entertained and happy."
+  },
+  {
+    "name": "Durable Dog Leash",
+    "price": 850.00,
+    "image": "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?q=80&w=500&auto=format&fit=crop",
+    "description": "Strong and durable leash for safe walks with your furry friend."
+  },
+  {
+    "name": "Silicon Food Bowl",
+    "price": 600.00,
+    "image": "https://images.unsplash.com/photo-1545249390-3b4a323babb7?q=80&w=500&auto=format&fit=crop",
+    "description": "Non-slip silicon bowl, easy to clean and perfect for food or water."
+  },
+  {
+    "name": "Squeaky Toy Set",
+    "price": 350.00,
+    "image": "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?q=80&w=500&auto=format&fit=crop",
+    "description": "A set of 3 squeaky toys that will provide hours of fun for your pet."
+  },
+  {
+    "name": "Soft Pet Bed",
+    "price": 2500.00,
+    "image": "https://images.unsplash.com/photo-1591429939960-b7d5add10b5c?q=80&w=500&auto=format&fit=crop",
+    "description": "Ultra-soft plush bed designed for maximum comfort during nap time."
+  }
+]
