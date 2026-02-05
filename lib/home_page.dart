@@ -50,16 +50,16 @@ class _HomePageState extends State<HomePage> {
     final productProvider = Provider.of<ProductProvider>(context);
 
     final backgroundColor = isDarkMode
-        ? const Color(0xFF121212)
-        : Colors.grey[300];
+        ? const Color(0xFF0F1A0F)
+        : const Color(0xFFF9FBF9);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
-    final cardColor = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
+    final cardColor = isDarkMode ? const Color(0xFF1B2B1B) : Colors.white;
     final accentColor = isDarkMode
         ? const Color(0xFF4CAF50)
-        : const Color(0xFF2E7D32);
+        : const Color(0xFF2D5A27);
     final appBarColor = isDarkMode
-        ? const Color(0xFF1B3022)
-        : const Color(0xFF2E7D32);
+        ? const Color(0xFF1B331B)
+        : const Color(0xFF2D5A27);
 
     return Scaffold(
       backgroundColor: backgroundColor,

@@ -86,12 +86,15 @@ class _MyAppState extends State<MyApp> {
   ThemeData _lightTheme() {
     return ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: Colors.grey[200],
+      scaffoldBackgroundColor: const Color(0xFFF8FAF8),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color.fromARGB(255, 52, 68, 122),
+        backgroundColor: Color(0xFF2D5A27),
         foregroundColor: Colors.white,
       ),
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF2D5A27),
+        primary: const Color(0xFF2D5A27),
+      ),
     );
   }
 
@@ -99,14 +102,15 @@ class _MyAppState extends State<MyApp> {
   ThemeData _darkTheme() {
     return ThemeData(
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: const Color(0xFF121212),
+      scaffoldBackgroundColor: const Color(0xFF0F1A0F),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF2C2C2C),
+        backgroundColor: Color(0xFF1B331B),
         foregroundColor: Colors.white,
       ),
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blueGrey,
+        seedColor: const Color(0xFF2D5A27),
         brightness: Brightness.dark,
+        primary: const Color(0xFF4CAF50),
       ),
     );
   }
