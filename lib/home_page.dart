@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: const BoxDecoration(
-                      color: const Color(0xFF4CAF50),
+                      color: Color(0xFF4CAF50),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
@@ -180,6 +180,7 @@ class _HomePageState extends State<HomePage> {
                         height: 220,
                         fit: BoxFit.cover,
                         color: isDarkMode
+                            // ignore: deprecated_member_use
                             ? Colors.black.withOpacity(0.6)
                             : null,
                         colorBlendMode: isDarkMode ? BlendMode.darken : null,
@@ -412,26 +413,30 @@ class _HomePageState extends State<HomePage> {
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
                 ),
-                child: product.image != null
-                    ? Image.network(
-                        product.image!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          print(
-                            '--- ERROR: Failed to load image: ${product.image}',
-                          );
-                          return const Center(
-                            child: Icon(
-                              Icons.broken_image,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
-                          );
-                        },
-                      )
-                    : const Center(
-                        child: Icon(Icons.image, size: 40, color: Colors.grey),
-                      ),
+                child: Hero(
+                  tag: product.slug,
+                  child: product.image != null
+                      ? Image.network(
+                          product.image!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
+                            );
+                          },
+                        )
+                      : const Center(
+                          child: Icon(
+                            Icons.image,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
+                        ),
+                ),
               ),
             ),
             Padding(
@@ -539,59 +544,80 @@ class _HomePageState extends State<HomePage> {
 
   // Featured Card Widget
   Widget featuredCard(FeaturedItem item, Color cardColor, Color textColor) {
-    return Container(
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(10),
-              ),
-              child: Image.network(
-                item.image,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Center(
-                  child: Icon(Icons.pets, size: 40, color: Colors.grey),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailPage(
+              slug: item.slug,
+              isDarkMode: isDarkMode,
+              onToggleTheme: widget.onToggleTheme,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(10),
+                ),
+                child: Hero(
+                  tag: item.slug,
+                  child: Image.network(
+                    item.image,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Center(
+                      child: Icon(Icons.pets, size: 40, color: Colors.grey),
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                    fontSize: 13,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      fontSize: 13,
+                    ),
                   ),
-                ),
-                Text(
-                  "Rs. ${item.price.toStringAsFixed(0)}",
-                  style: const TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                  Text(
+                    "Rs. ${item.price.toStringAsFixed(0)}",
+                    style: const TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

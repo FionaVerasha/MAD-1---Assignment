@@ -91,9 +91,6 @@ class CartPage extends StatelessWidget {
                                         height: 60,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stackTrace) {
-                                          print(
-                                            '--- ERROR: Failed to load image: ${item.image}',
-                                          );
                                           return const Icon(
                                             Icons.broken_image,
                                             size: 40,

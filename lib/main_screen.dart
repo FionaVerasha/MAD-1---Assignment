@@ -100,7 +100,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
-                        color: const Color(0xFF4CAF50),
+                        color: Color(0xFF4CAF50),
                         shape: BoxShape.circle,
                       ),
                       child: Text(

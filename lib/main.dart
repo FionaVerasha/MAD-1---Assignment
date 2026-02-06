@@ -13,6 +13,7 @@ import 'providers/featured_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  debugPrint("🚀 App started successfully");
 
   runApp(
     MultiProvider(
@@ -67,11 +68,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
       theme: _lightTheme(),
       darkTheme: _darkTheme(),
-
-      // Handles login and routing logic
       home: _AuthGate(onToggleTheme: _toggleTheme, isDarkMode: _isDarkMode),
-
-      // Named routes
       routes: {
         '/login': (_) => const LoginPage(),
         '/main': (_) =>
@@ -82,7 +79,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // Light Theme
   ThemeData _lightTheme() {
     return ThemeData(
       brightness: Brightness.light,
@@ -98,7 +94,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // Dark Theme
   ThemeData _darkTheme() {
     return ThemeData(
       brightness: Brightness.dark,

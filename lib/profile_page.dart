@@ -231,7 +231,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   email = emailController.text;
                 });
                 if (mounted) {
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
+                  // ignore: use_build_context_synchronously
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Profile updated successfully!"),
@@ -286,6 +288,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
 
       Position position = await Geolocator.getCurrentPosition(
+        // ignore: deprecated_member_use
         desiredAccuracy: LocationAccuracy.high,
       );
 
@@ -322,6 +325,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _logout(BuildContext context) async {
     await Provider.of<AuthProvider>(context, listen: false).logout();
     if (!mounted) return;
+    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
@@ -358,6 +362,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
+                    // ignore: deprecated_member_use
                     colors: [appBarColor, appBarColor.withOpacity(0.8)],
                   ),
                 ),
@@ -379,6 +384,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       email.isNotEmpty ? email : "Loading...",
                       style: TextStyle(
                         fontSize: 14,
+                        // ignore: deprecated_member_use
                         color: Colors.white.withOpacity(0.8),
                       ),
                     ),
@@ -476,11 +482,13 @@ class _ProfilePageState extends State<ProfilePage> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
+                // ignore: deprecated_member_use
                 color: Colors.white.withOpacity(0.8),
                 width: 3,
               ),
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(0.3),
                   blurRadius: 15,
                   offset: const Offset(0, 8),
@@ -554,6 +562,7 @@ class _ProfilePageState extends State<ProfilePage> {
         trailing: Icon(
           Icons.arrow_forward_ios_rounded,
           size: 16,
+          // ignore: deprecated_member_use
           color: textColor.withOpacity(0.3),
         ),
         onTap:
@@ -697,6 +706,7 @@ class _ProfilePageState extends State<ProfilePage> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         style: ElevatedButton.styleFrom(
+          // ignore: deprecated_member_use
           backgroundColor: const Color(0xFF2E7D32).withOpacity(0.1),
           foregroundColor: const Color(0xFF2E7D32),
           elevation: 0,

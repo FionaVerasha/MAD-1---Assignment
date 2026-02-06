@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/product.dart';
 
 class ProductService {
   final String _baseUrl = "https://whisker-cart.onrender.com/api";
+
+  Future<String> loadOfflineJson() async {
+    return await rootBundle.loadString('assets/json/featured_offline.json');
+  }
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,13 +32,6 @@ class ProductService {
         data = decoded['data'];
       } else {
         data = [];
-      }
-
-      // DEBUG LOGS
-      if (data.isNotEmpty) {
-        final firstProduct = data[0];
-        print('--- DEBUG: First Product JSON: $firstProduct');
-        print('--- DEBUG: Image Raw Value: ${firstProduct['image']}');
       }
 
       return data.map((json) => Product.fromJson(json)).toList();

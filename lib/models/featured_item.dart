@@ -3,12 +3,14 @@ class FeaturedItem {
   final double price;
   final String image;
   final String description;
+  final String slug;
 
   FeaturedItem({
     required this.name,
     required this.price,
     required this.image,
     required this.description,
+    required this.slug,
   });
 
   factory FeaturedItem.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,9 @@ class FeaturedItem {
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       image: json['image'] ?? '',
       description: json['description'] ?? '',
+      slug:
+          json['slug'] ??
+          (json['name'] ?? '').toString().toLowerCase().replaceAll(' ', '-'),
     );
   }
 }

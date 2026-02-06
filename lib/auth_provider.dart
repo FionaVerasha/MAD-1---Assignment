@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
@@ -100,10 +99,12 @@ class AuthProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final userData = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
-        if (userData['name'] != null)
+        if (userData['name'] != null) {
           await prefs.setString('user_name', userData['name']);
-        if (userData['email'] != null)
+        }
+        if (userData['email'] != null) {
           await prefs.setString('user_email', userData['email']);
+        }
       }
     } catch (_) {}
   }
@@ -139,10 +140,12 @@ class AuthProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         _token = savedToken;
         final userData = jsonDecode(response.body);
-        if (userData['name'] != null)
+        if (userData['name'] != null) {
           await prefs.setString('user_name', userData['name']);
-        if (userData['email'] != null)
+        }
+        if (userData['email'] != null) {
           await prefs.setString('user_email', userData['email']);
+        }
         notifyListeners();
         return true;
       } else {

@@ -78,6 +78,8 @@ class _ShopPageState extends State<ShopPage> {
             return name.contains('cat') ||
                 name.contains('kitten') ||
                 name.contains('meow') ||
+                name.contains('whisker') ||
+                name.contains('felix') ||
                 cat.contains('cat');
           }).toList();
           break;
@@ -88,6 +90,10 @@ class _ShopPageState extends State<ShopPage> {
             return name.contains('dog') ||
                 name.contains('puppy') ||
                 name.contains('pedigree') ||
+                name.contains('purina') ||
+                name.contains('drools') ||
+                name.contains('royal canin') ||
+                name.contains('iams') ||
                 cat.contains('dog');
           }).toList();
           break;
@@ -100,6 +106,11 @@ class _ShopPageState extends State<ShopPage> {
                 name.contains('collar') ||
                 name.contains('bowl') ||
                 name.contains('toy') ||
+                name.contains('bed') ||
+                name.contains('kit') ||
+                name.contains('first aid') ||
+                name.contains('care') ||
+                name.contains('grooming') ||
                 cat.contains('accessory');
           }).toList();
           break;
@@ -151,6 +162,7 @@ class _ShopPageState extends State<ShopPage> {
                         borderRadius: BorderRadius.circular(25),
                         boxShadow: [
                           BoxShadow(
+                            // ignore: deprecated_member_use
                             color: Colors.black.withOpacity(0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
@@ -160,6 +172,7 @@ class _ShopPageState extends State<ShopPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         children: [
+                          // ignore: deprecated_member_use
                           Icon(Icons.search, color: textColor.withOpacity(0.5)),
                           const SizedBox(width: 8),
                           Expanded(
@@ -173,6 +186,7 @@ class _ShopPageState extends State<ShopPage> {
                               decoration: InputDecoration(
                                 hintText: "Search",
                                 hintStyle: TextStyle(
+                                  // ignore: deprecated_member_use
                                   color: textColor.withOpacity(0.5),
                                 ),
                                 border: InputBorder.none,
@@ -183,9 +197,11 @@ class _ShopPageState extends State<ShopPage> {
                           Container(
                             height: 20,
                             width: 1,
+                            // ignore: deprecated_member_use
                             color: textColor.withOpacity(0.1),
                             margin: const EdgeInsets.symmetric(horizontal: 8),
                           ),
+                          // ignore: deprecated_member_use
                           Icon(Icons.tune, color: textColor.withOpacity(0.5)),
                         ],
                       ),
@@ -204,6 +220,7 @@ class _ShopPageState extends State<ShopPage> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
+                              // ignore: deprecated_member_use
                               color: Colors.black.withOpacity(0.05),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
@@ -311,6 +328,7 @@ class _ShopPageState extends State<ShopPage> {
                                   size: 18,
                                   color: isSelected
                                       ? Colors.white
+                                      // ignore: deprecated_member_use
                                       : textColor.withOpacity(0.5),
                                 ),
                               ],
@@ -319,7 +337,7 @@ class _ShopPageState extends State<ShopPage> {
                         ),
                       ),
                     );
-                  }).toList(),
+                  }),
                   const SizedBox(width: 4),
                 ],
               ),
@@ -419,6 +437,7 @@ class _ShopPageState extends State<ShopPage> {
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.03),
               blurRadius: 15,
               offset: const Offset(0, 5),
@@ -443,16 +462,19 @@ class _ShopPageState extends State<ShopPage> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(12),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: product.image != null
-                            ? Image.network(
-                                product.image!,
-                                fit: BoxFit.contain,
-                                errorBuilder: (ctx, _, __) =>
-                                    const Icon(Icons.broken_image, size: 40),
-                              )
-                            : const Icon(Icons.image, size: 40),
+                      child: Hero(
+                        tag: product.slug,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: product.image != null
+                              ? Image.network(
+                                  product.image!,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (ctx, _, __) =>
+                                      const Icon(Icons.broken_image, size: 40),
+                                )
+                              : const Icon(Icons.image, size: 40),
+                        ),
                       ),
                     ),
                   ),
@@ -461,6 +483,7 @@ class _ShopPageState extends State<ShopPage> {
                     right: 20,
                     child: Icon(
                       Icons.favorite_border,
+                      // ignore: deprecated_member_use
                       color: textColor.withOpacity(0.3),
                       size: 22,
                     ),
@@ -483,13 +506,14 @@ class _ShopPageState extends State<ShopPage> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
+                            // ignore: deprecated_member_use
                             color: textColor.withOpacity(0.6),
                             fontSize: 13,
                           ),
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          "\$${product.price.toStringAsFixed(0)}",
+                          "Rs. ${product.price.toStringAsFixed(2)}",
                           style: TextStyle(
                             color: textColor,
                             fontWeight: FontWeight.bold,
@@ -528,6 +552,7 @@ class _ShopPageState extends State<ShopPage> {
                       child: Icon(
                         Icons.shopping_cart_outlined,
                         size: 20,
+                        // ignore: deprecated_member_use
                         color: textColor.withOpacity(0.8),
                       ),
                     ),
