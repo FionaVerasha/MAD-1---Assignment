@@ -153,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     String? savedPath = prefs.getString('profile_image_path');
 
     // Verify file exists if path is not null

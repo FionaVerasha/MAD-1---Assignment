@@ -364,20 +364,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       if (subPoints.length > 1) points = subPoints;
     }
 
-    // List of premium highlights to fill up to 5 points
+    // List of premium, detailed highlights (approx 2 lines each)
     final highlights = [
-      "Premium quality materials and ingredients",
-      "Expertly crafted for optimal pet health",
-      "Tested and approved by pet nutritionists",
-      "Eco-friendly and sustainable sourcing",
-      "Durable design for long-lasting use",
-      "Safe and non-toxic for all pet breeds",
-      "Easy to clean and maintain daily",
+      "Crafted with premium quality, ethically sourced materials and natural ingredients to ensure the absolute best for your pet's long-term health and happiness.",
+      "Expertly formulated by top-tier pet nutritionists and veterinarians to provide a complete, balanced diet that supports strong immunity and daily vitality.",
+      "Rigidly tested and quality-approved to meet the highest safety standards, ensuring a non-toxic and reliable experience for all breeds and life stages.",
+      "Eco-friendly and sustainable manufacturing processes that prioritize the environment while delivering superior performance and durability in every use.",
+      "Innovative design features that make daily maintenance effortless, allowing you to spend more quality time bonding with your beloved companion.",
+      "Advanced hypoallergenic properties that soothe sensitive systems and promote a healthy, shiny coat through essential fatty acids and pure minerals.",
+      "Durable, long-lasting construction built to withstand energetic play and daily wear, making it a cost-effective and dependable choice for any household.",
     ];
 
     // Add extra highlights until we reach 5
     for (var highlight in highlights) {
       if (points.length >= 5) break;
+      // If the current description point is too short (e.g. "Vitality"),
+      // we'll replace or augment it with a premium highlight
       if (!points.any(
         (p) => p.toLowerCase().contains(highlight.split(' ')[0].toLowerCase()),
       )) {
@@ -387,10 +389,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     // Ensure we have exactly 5 for a consistent look
     points = points.toSet().toList();
+
+    // If we have short points from the real description, let's make them longer
+    for (int i = 0; i < points.length; i++) {
+      if (points[i].length < 60) {
+        // Find a highlight that isn't already used and append its essence or replace
+        points[i] = "${points[i]}. ${highlights[i % highlights.length]}";
+      }
+    }
+
     if (points.length > 5) {
       points = points.sublist(0, 5);
     } else if (points.length < 5) {
-      // Emergency fallback if for some reason we still have < 5
       points.addAll(highlights.take(5 - points.length));
     }
 

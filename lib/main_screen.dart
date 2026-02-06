@@ -38,7 +38,6 @@ class _MainScreenState extends State<MainScreen> {
         ? Colors.grey[700]
         : Colors.grey[500];
 
-    // All pages with dark mode + toggle passed
     final List<Widget> pagesList = [
       HomePage(
         isDarkMode: widget.isDarkMode,
@@ -65,7 +64,6 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: pagesList[_selectedIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
